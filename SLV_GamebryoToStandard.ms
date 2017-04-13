@@ -2,7 +2,7 @@
 [INFO] 
 
 NAME = GamebryoToStandard
-VERSION = 1.0.0
+VERSION = 1.0.1
 AUTHOR = Vasily Lukyanenko
 DEV = VISCO
 HELP = 
@@ -10,6 +10,11 @@ HELP =
 [1.0.0]
 
 * First release =
+
+[1.0.1]
+
+* Changed: Now works with MultiMaterial=
+* Changed: Convert only selected objects=
 
 [ABOUT]
 
@@ -55,13 +60,25 @@ fn parseToLine m =
 
 fn convertGamebryoToStandard =
 (
-	m = for i in geometry where i.material != undefined and i.material.shaderType == 0 collect i.material 	
+	m = #()
+	
+	if(selection.count == 0) do return messageBox "Please select objects!" title: "Warning!"
+		
+	for i in getClassInstances Standard do
+	(
+		if(i.shaderType != 0) do continue
+		s = selection as array
+		isDepend = false
+		for ref in refs.dependents i where superClassOf ref == GeometryClass and findItem s ref != 0 do isDepend = true
+		
+		if(isDepend) do append m i
+	)
+		
 	mats = makeUniqueArray m
 
 	progressStart "Convert Materials..."
 	escapeEnable
-	
-	print (m.count as string)
+
 	disableSceneRedraw()
 	
 	iCnt = 0
@@ -87,7 +104,7 @@ fn convertGamebryoToStandard =
 )
 
 try(closeRolloutFloater _fGamebryoToStandard) catch()
-global _fGamebryoToStandard = newRolloutFloater "GB -> Standard" 200 330
+global _fGamebryoToStandard = newRolloutFloater "GB -> Standard" 200 240
 
 rollout _rGamebryoToStandard "GB -> Standard"
 (
