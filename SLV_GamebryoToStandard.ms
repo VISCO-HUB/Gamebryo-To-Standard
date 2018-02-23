@@ -19,6 +19,11 @@ HELP =
 [ABOUT]
 
 Just create Standard material and  connect bump map to diffuse map from Gamebryo materials=
+_=
+How to use:=
+@=
+Run script on 3Ds Max above 2012, and press convert.=
+Script just move bitmap from bump to diffuse slot.=
 
 [TEST]
 
