@@ -2,7 +2,7 @@
 [INFO] 
 
 NAME = GamebryoToStandard
-VERSION = 1.0.1
+VERSION = 1.0.2
 AUTHOR = Vasily Lukyanenko
 DEV = VISCO
 HELP = 
@@ -15,6 +15,10 @@ HELP =
 
 * Changed: Now works with MultiMaterial=
 * Changed: Convert only selected objects=
+
+[1.0.2]
+
+* Changed: Detect shader type by name=
 
 [ABOUT]
 
@@ -71,7 +75,7 @@ fn convertGamebryoToStandard =
 		
 	for i in getClassInstances Standard do
 	(
-		if(i.shaderType != 0) do continue
+		if(i.shaderByName != "Gamebryo Shader") do continue
 		s = selection as array
 		isDepend = false
 		for ref in refs.dependents i where superClassOf ref == GeometryClass and findItem s ref != 0 do isDepend = true
